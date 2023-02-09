@@ -34,6 +34,13 @@ pipeline {
             }
          }
       }
+      stage("Tag and Push") {
+         steps {
+                sh "docker tag jenkins-pipeline_web:latest jiyeryu/jenkins-app:${BUILD_NUMBER}"
+                sh "docker login -u jiyeryu -p ${DOCKER_USER_PASSWORD}"
+                sh "docker push jiyeryu/jenkins-app:${BUILD_NUMBER}"
+         }
+      }
       stage("deploy") {
          steps {
             sh "docker-compose up -d"
